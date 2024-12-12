@@ -27,6 +27,9 @@ const updateTransaction = async (transaction, user) => {
     if (!userData) {
         throw new Error("User not found")
     }
+    if (userData.balance < transaction.amount) {
+        throw new Error("Insufficient balance")
+    }
     transaction.id_user = user.id
     transaction.type = "DEBIT"
     return await repo.updateTransaction(transaction)
