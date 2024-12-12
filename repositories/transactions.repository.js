@@ -39,4 +39,13 @@ const updateTransaction = async (transaction) => {
     }
 }
 
-module.exports = {addTransaction, updateTransaction}
+const getTransaction = async (id) => {
+    try {
+        const res = await pool.query('SELECT * FROM transaction WHERE id_user = $1', [id]);
+        return res.rows;
+    } catch {
+        throw new Error('DB Error Occurred',)
+    }
+}
+
+module.exports = {addTransaction, updateTransaction, getTransaction}

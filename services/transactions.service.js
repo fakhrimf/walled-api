@@ -35,4 +35,14 @@ const updateTransaction = async (transaction, user) => {
     return await repo.updateTransaction(transaction)
 }
 
-module.exports = {addTransaction, updateTransaction}
+const getTransaction = async (id) => {
+    const transaction = await repo.getTransaction(id)
+    if(!transaction) {
+        throw new Error("Transaction not found")
+    } else {
+        return transaction
+    }
+}
+
+
+module.exports = {addTransaction, updateTransaction, getTransaction}

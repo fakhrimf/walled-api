@@ -38,4 +38,13 @@ const addTransaction = async (req, res) => {
     }
 }
 
-module.exports = {addTransaction, updateTransaction}
+const getTransaction = async (req, res) => {
+    try {
+        const transaction = await service.getTransaction(Number(req.user.id))
+        return res.status(200).json(transaction)
+    } catch(error) {
+        return res.status(404).json({message: "Not found"})
+    }
+}
+
+module.exports = {addTransaction, updateTransaction, getTransaction}

@@ -2,9 +2,10 @@ const e = require("express")
 const router = e.Router()
 
 const cont = require("../controllers/transactions.controller")
-const token = require("../middlewares/auth.middleware")
+const token = require("../middlewares/transactions.middleware")
 
-router.post("/topup", token.authToken, cont.addTransaction)
-router.post("/transfer", token.authToken, cont.updateTransaction)
+router.post("/transactions/topup", token.authTransaction, cont.addTransaction)
+router.post("/transactions/transfer", token.authTransaction, cont.updateTransaction)
+router.get("/transactions", token.authTransaction, cont.getTransaction)
 
 module.exports = router
