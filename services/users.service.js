@@ -1,5 +1,6 @@
 const repo = require("../repositories/users.repository")
 const bcrypt = require("bcrypt")
+const { genToken } = require("../utils/auth.util")
 
 const createUser = async (user) => {
     let res = await repo.getUserByEmail(user.email)
@@ -15,18 +16,44 @@ const createUser = async (user) => {
 const login = async (user) => {
     let res = await repo.getUserByEmail(user.email)
     if (res.length === 0) {
-        throw new Error("User doesn't exists")
+        throw new Error('Email or password is incorrect')
     }
 
     const isValid = await bcrypt.compare(user.password, res[0].password)
     if (!isValid) {
-        throw new Error("Incorrect password")
+        throw new Error('Email or password is incorrect')
     }
-    return res[0]
+
+    token = genToken({email: res[0].email, id: res[0].id})
+    return token
 }
 
 const getUser = async (id) => {
-    return await repo.getUser(id)
+    const user = await repo.getUser(id)
+    if(!user) {
+        throw new Error("User not found")
+    } else {
+        return user
+    }
 }
 
-module.exports = {createUser, getUser, login}
+const addTransaction = async (transaction, user) => {
+    if (!transaction.date_epoch) {
+        transaction.date_epoch = Date.now()
+    }
+    transaction.id_user = user.id
+    transaction.fromto = user.id
+    transaction.type = "CREDIT"
+    return await repo.addTransaction(transaction)
+}
+
+const updateTransaction = async (transaction, user) => {
+    if (!transaction.date_epoch) {
+        transaction.date_epoch = Date.now()
+    }
+    transaction.id_user = user.id
+    transaction.type = "DEBIT"
+    return await repo.updateTransaction(transaction)
+}
+
+module.exports = {createUser, getUser, login, addTransaction, updateTransaction}
