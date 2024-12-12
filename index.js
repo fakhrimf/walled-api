@@ -4,8 +4,10 @@ const port = 8080;
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-const router = require("./routers/users.router")
-app.use(router)
+const userRouter = require("./routers/users.router")
+app.use(userRouter)
+const transactionRouter = require("./routers/transactions.router")
+app.use(transactionRouter)
 app.listen(port, () => {
     console.log(`Express is running on port ${port}`)
 })

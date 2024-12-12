@@ -37,23 +37,4 @@ const getUser = async (id) => {
     }
 }
 
-const addTransaction = async (transaction, user) => {
-    if (!transaction.date_epoch) {
-        transaction.date_epoch = Date.now()
-    }
-    transaction.id_user = user.id
-    transaction.fromto = user.id
-    transaction.type = "CREDIT"
-    return await repo.addTransaction(transaction)
-}
-
-const updateTransaction = async (transaction, user) => {
-    if (!transaction.date_epoch) {
-        transaction.date_epoch = Date.now()
-    }
-    transaction.id_user = user.id
-    transaction.type = "DEBIT"
-    return await repo.updateTransaction(transaction)
-}
-
-module.exports = {createUser, getUser, login, addTransaction, updateTransaction}
+module.exports = {createUser, getUser, login}
