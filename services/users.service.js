@@ -1,5 +1,5 @@
 const repo = require("../repositories/users.repository")
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcryptjs")
 const { genToken } = require("../utils/auth.util")
 
 const createUser = async (user) => {
