@@ -23,6 +23,15 @@ const getUser = async (req, res) => {
     }
 }
 
+const getUserById = async (req, res) => {
+    try {
+        const user = await service.getUser(Number(req.user.id))
+        return res.status(200).json({id: user.id, nickname: user.nickname, avatar: user.avatar, balance: user.balance, full_name: user.full_name, email: user.email})
+    } catch(error) {
+        return res.status(404).json({message: "Not found"})
+    }
+}
+
 const loginUser = async (req, res) => {
     try {
         const {err, value} = loginSchema.validate(req.body)
@@ -30,7 +39,7 @@ const loginUser = async (req, res) => {
             return res.status(400).json({message: err.details[0].message})
         }
         const login = await service.login(value)
-        return res.status(200).json({token: login})
+        return res.status(200).json(login)
     } catch {
         return res.status(400).json({message: "Wrong password or email"})
     }

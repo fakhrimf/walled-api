@@ -25,7 +25,7 @@ const login = async (user) => {
     }
 
     token = genToken({email: res[0].email, id: res[0].id})
-    return token
+    return {token: token, id: res[0].id}
 }
 
 const getUser = async (id) => {
